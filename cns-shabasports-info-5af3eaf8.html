@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>沙巴体育 – 体育信息与场景导航</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background: #f5f9fc;
+      color: #1a2b34;
+      line-height: 1.6;
+      padding: 1.2rem 1rem 2.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page {
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    /* 主视觉 */
+    .hero {
+      background: linear-gradient(145deg, #0e3a47, #1b5e6b);
+      color: #e9f3f5;
+      border-radius: 2rem 2rem 2rem 0;
+      padding: 2.8rem 2rem 2.5rem;
+      margin-bottom: 2.2rem;
+      box-shadow: 0 8px 24px rgba(12, 60, 70, 0.18);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      right: -30px;
+      top: -20px;
+      width: 180px;
+      height: 180px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 50%;
+    }
+
+    .hero h1 {
+      font-size: 2.6rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      max-width: 640px;
+      color: #cfebf0;
+      margin-bottom: 0.3rem;
+      font-weight: 400;
+    }
+
+    .hero .accent-line {
+      display: inline-block;
+      width: 48px;
+      height: 4px;
+      background: #65c8d6;
+      border-radius: 4px;
+      margin: 0.8rem 0 1rem;
+    }
+
+    .hero .tag {
+      display: inline-block;
+      background: rgba(101, 200, 214, 0.18);
+      color: #b9e6ed;
+      padding: 0.2rem 1rem;
+      border-radius: 40px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      margin-top: 0.4rem;
+    }
+
+    /* 网格卡片区 — 信息卡片式 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+      margin: 2.2rem 0 2.6rem;
+    }
+
+    @media (min-width: 640px) {
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 960px) {
+      .card-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .card {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1.6rem 1.4rem;
+      box-shadow: 0 2px 10px rgba(16, 60, 70, 0.06);
+      border: 1px solid rgba(26, 120, 130, 0.08);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 20px rgba(12, 90, 100, 0.10);
+      transform: translateY(-3px);
+    }
+
+    .card-icon {
+      width: 38px;
+      height: 38px;
+      background: #d9f0f4;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.8rem;
+      font-size: 1.3rem;
+      color: #146773;
+    }
+
+    .card h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #0b3b44;
+    }
+
+    .card p {
+      font-size: 0.94rem;
+      color: #2a454e;
+      margin-bottom: 0.5rem;
+      flex: 1;
+    }
+
+    .card .meta-tag {
+      font-size: 0.78rem;
+      color: #3e7e87;
+      background: #e3f2f5;
+      display: inline-block;
+      padding: 0.1rem 0.75rem;
+      border-radius: 40px;
+      align-self: flex-start;
+      margin-top: 0.3rem;
+    }
+
+    /* 适合人群 & 场景融合段落 */
+    .section-block {
+      background: white;
+      border-radius: 1.8rem;
+      padding: 1.8rem 1.8rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      border: 1px solid #e2eff3;
+    }
+
+    .section-block h2 {
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: #0d414d;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .section-block h2 span {
+      background: #b1dbe2;
+      width: 8px;
+      height: 8px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-right: 0.4rem;
+    }
+
+    .two-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    @media (min-width: 720px) {
+      .two-col {
+        flex-direction: row;
+        gap: 2rem;
+      }
+      .two-col > div {
+        flex: 1;
+      }
+    }
+
+    .two-col p {
+      margin-bottom: 0.6rem;
+      font-size: 0.98rem;
+    }
+
+    .two-col ul {
+      list-style: none;
+    }
+
+    .two-col li {
+      padding: 0.4rem 0 0.4rem 1.2rem;
+      position: relative;
+      font-size: 0.95rem;
+      color: #1f3e48;
+    }
+
+    .two-col li::before {
+      content: '▹';
+      color: #2d919f;
+      position: absolute;
+      left: 0;
+      font-weight: 600;
+    }
+
+    /* 自然链接段落 */
+    .link-note {
+      background: #e5f2f5;
+      border-radius: 2rem;
+      padding: 1.5rem 1.8rem;
+      margin: 1.8rem 0 1.2rem;
+      border-left: 5px solid #3aabb9;
+      font-size: 0.98rem;
+      color: #10323c;
+    }
+
+    .link-note a {
+      color: #0d5d6b;
+      background: transparent;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: #7ec4cf;
+      font-weight: 500;
+      transition: color 0.2s, background 0.15s;
+      padding: 0 2px;
+    }
+
+    .link-note a:hover {
+      color: #04303b;
+      background: #cae4ea;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+
+    .faq-mini {
+      margin-top: 1rem;
+    }
+
+    .faq-mini details {
+      border-bottom: 1px solid #d7e7ec;
+      padding: 0.7rem 0;
+    }
+
+    .faq-mini summary {
+      font-weight: 500;
+      color: #13414c;
+      cursor: pointer;
+      padding: 0.3rem 0;
+      font-size: 0.96rem;
+    }
+
+    .faq-mini details p {
+      margin: 0.3rem 0 0.2rem;
+      padding-left: 0.3rem;
+      color: #284f5a;
+      font-size: 0.9rem;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #607d86;
+      margin-top: 2.2rem;
+      border-top: 1px solid #d5e5ea;
+      padding-top: 1.5rem;
+    }
+
+    .badge-green {
+      display: inline-block;
+      background: #0f5f6b;
+      color: #e5f5f8;
+      padding: 0.15rem 1rem;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <!-- hero 区域 -->
+  <div class="hero">
+    <h1>沙巴体育 · 信息场域</h1>
+    <div class="accent-line"></div>
+    <p>围绕体育资讯与场景化内容，提供简洁清晰的卡片式信息聚合。从活动思路到人群适配，构建轻量导航。</p>
+    <span class="tag">⚡ 主题卡片 · 场景勾勒</span>
+  </div>
+
+  <!-- 网格卡片: 用途 / 场景卡片 -->
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <h3>赛事资讯梳理</h3>
+      <p>整合体育赛事要点、赛程提示与基础数据，帮助快速建立对赛事节奏的认知，减少信息过载。</p>
+      <span class="meta-tag">信息结构化</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧩</div>
+      <h3>活动思路参考</h3>
+      <p>针对不同体育项目场景提供活动灵感，例如观赛聚会、主题分享或轻竞赛组织，延伸内容边界。</p>
+      <span class="meta-tag">场景启发</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>队伍 & 选手动向</h3>
+      <p>关注队伍近况、阵容轮换及选手状态，为深度内容讨论提供中立的基础信息参考。</p>
+      <span class="meta-tag">动态追踪</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌱</div>
+      <h3>新人友好指引</h3>
+      <p>面向刚接触体育内容的使用者，提供规则简介、常见术语与观看指南，降低入门门槛。</p>
+      <span class="meta-tag">入门向</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">📌</div>
+      <h3>社群交流提示</h3>
+      <p>归纳常见的社群讨论方向与礼仪提示，营造专注、有序的体育内容讨论氛围。</p>
+      <span class="meta-tag">氛围维护</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔄</div>
+      <h3>多项目覆盖</h3>
+      <p>涵盖足球、篮球、网球及部分小众运动，内容策划不拘泥于单一领域，保持多样化。</p>
+      <span class="meta-tag">跨项目</span>
+    </div>
+  </div>
+
+  <!-- 适合人群 + 自然链接段落 -->
+  <div class="section-block">
+    <h2><span></span> 适合哪些使用者</h2>
+    <div class="two-col">
+      <div>
+        <p>信息偏好清晰、希望快速获取体育内容框架的使用者，包括赛事观察者、内容整理爱好者，以及想为社群提供基础素材的组织者。页面设计以低干扰、高可读性为参考，适合移动端与桌面端切换浏览。</p>
+        <p>如果你正在寻找一个结构稳定的体育信息出发点，<a href="https://cns-shabasports.com">沙巴体育</a> 在内容编排上保持克制的风格，不堆叠夸张表述，更适合希望高效阅读的人。</p>
+      </div>
+      <div>
+        <ul>
+          <li>体育内容编辑 / 轻量研究者</li>
+          <li>观赛习惯较固定但想拓宽视野的人群</li>
+          <li>活动组织者需要参考框架</li>
+          <li>希望减少信息噪音的阅读者</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 自然链接段落 (嵌入句子里) -->
+  <div class="link-note">
+    <p>💡 内容层面，<a href="https://cns-shabasports.com">沙巴体育</a> 注重信息密度与可读性平衡，不依赖诱导式标题，而是围绕体育项目本身展开基础内容梳理。对于需要快速定位赛事节奏或人群特征的使用者，这里提供了一种相对安静的信息界面。</p>
+  </div>
+
+  <!-- FAQ 摘要卡片 -->
+  <div class="section-block faq-mini">
+    <h2><span></span> 常见思路摘要</h2>
+    <details>
+      <summary>这个页面主要提供什么类型的内容？</summary>
+      <p>偏向体育信息卡片式聚合，包括赛事提示、场景想法、人群适配建议，不包含实时比分或竞猜引导，属于辅助阅读型内容。</p>
+    </details>
+    <details>
+      <summary>内容更新频率如何？</summary>
+      <p>页面结构保持稳定，卡片内容会随体育赛季与主题方向进行适度调整，保证信息时效性但不追求频繁刷新。</p>
+    </details>
+    <details>
+      <summary>移动端浏览体验怎么样？</summary>
+      <p>采用网格自适应布局，卡片在手机屏幕上单列展示，字号与点击区域均经过优化，横屏或平板设备可显示多列。</p>
+    </details>
+    <details>
+      <summary>是否包含外部链接或推广？</summary>
+      <p>页面中只包含一个指向主站的链接，形式上嵌入在句子段落中，无额外推广横幅或跳转。</p>
+    </details>
+  </div>
+
+  <!-- 底部信息 -->
+  <div class="footer-note">
+    <span class="badge-green">信息卡片 · 简洁专业</span>
+    <p style="margin-top: 0.6rem;">内容基于体育信息组织，无意提供任何形式的预测或保证。保持真实与克制。</p>
+  </div>
+</div>
+</body>
+</html>
