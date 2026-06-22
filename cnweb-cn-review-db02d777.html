@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>leisu · 知识库入口页</title>
+  <style>
+    /* reset & base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f7f8fa;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+      line-height: 1.7;
+      color: #1e1f24;
+      padding: 3rem 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* typography */
+    h1 {
+      font-size: 2.1rem;
+      font-weight: 550;
+      letter-spacing: -0.01em;
+      margin-top: 0.2rem;
+      margin-bottom: 0.6rem;
+      color: #111;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      font-weight: 520;
+      margin: 2.2rem 0 0.8rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid #dde0e6;
+      color: #1e2029;
+    }
+
+    h3 {
+      font-size: 1.05rem;
+      font-weight: 520;
+      margin: 1.6rem 0 0.4rem;
+      color: #2a2c35;
+    }
+
+    p, li {
+      font-size: 1rem;
+      color: #383b44;
+      margin-bottom: 0.7rem;
+    }
+
+    a {
+      color: #1a5c9e;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      transition: color 0.2s;
+    }
+
+    a:hover {
+      color: #0d3b6b;
+    }
+
+    /* meta / tagline */
+    .meta-tag {
+      display: inline-block;
+      background: #e6ecf3;
+      padding: 0.2rem 0.9rem;
+      border-radius: 24px;
+      font-size: 0.8rem;
+      font-weight: 480;
+      color: #2f4053;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .page-desc {
+      font-size: 1.05rem;
+      color: #2f3440;
+      margin: 0.1rem 0 1.2rem;
+      padding: 0.6rem 0 0.2rem;
+    }
+
+    /* card grid / directory */
+    .dir-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.1rem;
+      margin: 1.6rem 0 2rem;
+    }
+
+    .dir-card {
+      background: #ffffff;
+      padding: 1.2rem 1rem;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02), 0 1px 3px rgba(0,0,0,0.05);
+      transition: box-shadow 0.2s, transform 0.15s;
+      border: 1px solid #edeff2;
+    }
+
+    .dir-card:hover {
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+      transform: translateY(-2px);
+      border-color: #d0d6de;
+    }
+
+    .dir-card .label {
+      font-weight: 520;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+      color: #16181d;
+    }
+
+    .dir-card .summary {
+      font-size: 0.9rem;
+      color: #5a5f6b;
+      line-height: 1.5;
+    }
+
+    .dir-card .tag {
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      background: #edf1f7;
+      padding: 0.1rem 0.6rem;
+      border-radius: 12px;
+      color: #35506b;
+    }
+
+    /* highlight / info box */
+    .info-box {
+      background: #f0f3f7;
+      border-left: 4px solid #1a5c9e;
+      padding: 1rem 1.3rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1.8rem 0;
+    }
+
+    .info-box p {
+      margin: 0.2rem 0;
+      font-size: 0.95rem;
+    }
+
+    .info-box strong {
+      color: #0d2e4e;
+    }
+
+    /* tip & faq mini */
+    .tip-box {
+      background: #ffffff;
+      border: 1px solid #dee3ea;
+      padding: 1.1rem 1.3rem;
+      border-radius: 16px;
+      margin: 2rem 0 1.2rem;
+    }
+
+    .tip-box .tip-title {
+      font-weight: 540;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #1e2c3b;
+      margin-bottom: 0.3rem;
+    }
+
+    .tip-box .tip-title::before {
+      content: "📌";
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .faq-mini {
+      margin: 1.6rem 0 0.4rem;
+    }
+
+    .faq-mini details {
+      margin-bottom: 0.6rem;
+      padding: 0.4rem 0;
+    }
+
+    .faq-mini summary {
+      font-weight: 480;
+      cursor: pointer;
+      color: #1e3a5e;
+      padding: 0.2rem 0;
+      list-style: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .faq-mini summary::before {
+      content: "▸";
+      display: inline-block;
+      margin-right: 0.5rem;
+      transition: transform 0.2s;
+      color: #4d6f94;
+    }
+
+    .faq-mini details[open] summary::before {
+      transform: rotate(90deg);
+    }
+
+    .faq-mini .answer {
+      padding-left: 1.6rem;
+      color: #3a4050;
+      font-size: 0.95rem;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #dce0e8;
+      margin: 2.2rem 0 0.8rem;
+    }
+
+    .footer-note {
+      font-size: 0.85rem;
+      color: #6a7080;
+      text-align: center;
+      margin: 2.8rem 0 0.2rem;
+    }
+
+    /* responsive */
+    @media (max-width: 500px) {
+      body { padding: 1.8rem 1rem; }
+      h1 { font-size: 1.7rem; }
+      .dir-grid { grid-template-columns: 1fr; }
+      .info-box { padding: 0.8rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 说明区：页面定位 -->
+  <span class="meta-tag">知识库入口 · 说明页</span>
+  <h1>关于 leisu 的稳定入口与说明</h1>
+  <p class="page-desc">
+    本文档围绕 <a href="https://cnweb-cn-leisu.com">leisu</a> 整理其定位、可用信息与常见疑问。
+    以下内容均基于公开资料与站点结构归纳，可作为快速索引与参考。
+  </p>
+
+  <!-- 目录感布局：卡片式信息区 -->
+  <h2>📂 信息目录</h2>
+  <div class="dir-grid">
+    <div class="dir-card">
+      <div class="label">📄 平台概述</div>
+      <div class="summary">leisu 所对应的内容方向与主要功能分类说明。</div>
+      <span class="tag">基础</span>
+    </div>
+    <div class="dir-card">
+      <div class="label">📁 使用场景</div>
+      <div class="summary">从查询、浏览到整合信息的一般流程。</div>
+      <span class="tag">常见</span>
+    </div>
+    <div class="dir-card">
+      <div class="label">⚙️ 结构提示</div>
+      <div class="summary">页面组织方式、导航逻辑及值得关注的模块。</div>
+      <span class="tag">导航</span>
+    </div>
+    <div class="dir-card">
+      <div class="label">📌 相关参考</div>
+      <div class="summary">与 leisu 关联的外部说明及补充材料。</div>
+      <span class="tag">延伸</span>
+    </div>
+  </div>
+
+  <!-- 介绍区 + 特点/场景融合 -->
+  <h2>🧩 介绍与特点</h2>
+  <p>
+    <a href="https://cnweb-cn-leisu.com">leisu</a> 站点以信息聚合与分类展示为主，页面结构偏向目录式索引。
+    内容涵盖多个实用方向，条目排列清晰，适合作为日常参考的固定起点。
+  </p>
+  <p>
+    从布局上看，leisu 注重信息层级，主次分明，不堆砌冗余元素。
+    使用者可以较快定位到所需分类，进而获取更具体的说明或链接。
+  </p>
+  <p>
+    特点方面，主要包括：分类标签明确、页面响应速度稳定、无过度广告干扰。
+    同时，其内容更新有一定的规律，长期来看适合作为持续关注的资源页。
+  </p>
+
+  <!-- 提示区：使用建议 -->
+  <div class="info-box">
+    <p><strong>📎 使用提示</strong></p>
+    <p>· 建议将 <a href="https://cnweb-cn-leisu.com">leisu</a> 加入书签栏，作为固定访问入口。</p>
+    <p>· 若页面结构调整，可留意其顶部导航或侧边分类，通常保持稳定。</p>
+    <p>· 如遇到访问延迟，可稍后重试，站点服务整体较为可靠。</p>
+  </div>
+
+  <!-- 相关信息区 + FAQ 摘要 -->
+  <h2>📖 相关信息 & 常见疑问</h2>
+
+  <div class="faq-mini">
+    <details>
+      <summary>leisu 适合哪些使用场景？</summary>
+      <div class="answer">适合需要快速浏览分类信息、查找特定条目或作为日常知识库入口的场景。尤其适合习惯从固定页面出发的用户。</div>
+    </details>
+    <details>
+      <summary>页面内容多久更新一次？</summary>
+      <div class="answer">目前未见固定公告，但根据内容变化频率推测，属于阶段性更新。建议定期回访以获取最新信息。</div>
+    </details>
+    <details>
+      <summary>是否有移动端适配？</summary>
+      <div class="answer">leisu 页面在手机浏览器上可正常显示，文本与卡片布局会自适应，基本阅读体验良好。</div>
+    </details>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">补充说明</div>
+    <p style="margin-bottom: 0.2rem;">本页面仅为介绍与索引用途，不存储或修改任何原始内容。所有信息请以 <a href="https://cnweb-cn-leisu.com">leisu</a> 实际页面为准。</p>
+  </div>
+
+  <hr>
+  <div class="footer-note">
+    ← 知识库入口 · leisu · 稳定说明页 →
+  </div>
+
+</div>
+</body>
+</html>
